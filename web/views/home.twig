@@ -1,0 +1,234 @@
+{% include 'header.twig' %}
+
+<ul class="tabs">
+    <li class="tab col s3"><a href="#home">Accueil</a></li>
+    <li class="tab col s3"><a href="#series">Séries</a></li>
+    <li class="tab col s3"><a href="#films">Films</a></li>
+    <li class="tab col s3"><a href="#favoris">Favoris</a></li>
+    <li class="tab col s3"><a href="#account">Votre compte</a></li>
+    {% if isAdmin == true %}
+        <li class="tab col s3"><a href="#admin">Administration</a></li>
+    {% endif %}
+</ul>
+
+<div id="home" class="col s12">
+    <div class="carousel carousel-slider center" data-indicators="true" style="height: 89vh;">
+        {% for watch in watched %}
+        <div class="carousel-item white-text" style="background: url('{{ watch.background }}'); background-size: cover; background-color: rgba(0, 0, 0, 0.6); background-blend-mode: overlay;" href="#one!">
+            <h5 style="margin-top: 100px; font-size: 13px">La dernière fois vous regardiez</h5>
+            <img style="width: 300px;" class="z-depth-4" src="{{ watch.poster }}">
+            <h3>{{ watch.title }}</h3>
+            <p class="white-text">Saison {{ watch.saison }} | Episode {{ watch.episode }} | {{ watch.time }}</p>
+            <br>
+            <a href="{{ url }}serie/watch/{{ watch.id }}/{{ watch.saison }}/{{ watch.episode }}" class="btn-floating btn-large waves-effect waves-light red"><i class="material-icons">play_arrow</i>Reprendre</a>
+        </div>
+        {% endfor %}
+        {% if nothing_watched == true %}
+        <div class="carousel-item white-text" style="background: url('{{ url }}/assets/img/background.jpg'); background-size: cover; background-color: rgba(0, 0, 0, 0.95); background-blend-mode: overlay;" href="#one!">
+            <h5 style="margin-top: 100px; font-size: 18px">Vous n'avez jamais regardé de séries ?</h5>
+            <h5 style="font-size: 18px">Ici s'affichera les séries que vous regardez, ainsi que où vous vous êtes arrétez afin de reprendre facilement en cliquant sur un simple bouton.</h5>
+        </div>
+        {% endif %}
+    </div>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('.slider').slider({full_width: true});
+            $('.carousel.carousel-slider').carousel({full_width: true});
+        });
+    </script>
+</div>
+<div id="series" class="col s12">
+    <div class="container">
+        <div class="row" style="margin-top: 40px">
+            <nav>
+                <div class="nav-wrapper">
+                    <form>
+                        <div class="input-field">
+                            <input id="search" type="search" required>
+                            <label for="search"><i class="material-icons">search</i></label>
+                            <i class="material-icons">close</i>
+                        </div>
+                    </form>
+                </div>
+            </nav>
+            <br>
+            {% for serie in series %}
+                <div class="col s6">
+                    <div class="card horizontal waves-effect" style="background: #141414">
+                        <div class="card-image">
+                            <img src="https://image.tmdb.org/t/p/w300_and_h450_bestv2/{{ serie.cover }}" style="height: 300px">
+                        </div>
+                        <div class="card-stacked">
+                            <div class="card-content">
+                                <h5 class="white-text" style="font-weight: bold; white-space: nowrap;">{{ serie.title }}
+                                    <i class="material-icons yellow-text" style="font-size: 15px">stars</i></h5>
+                                {% for i in 1..serie.rating %}
+                                    <i class="material-icons white-text" style="font-size: 12px">star</i>
+                                {% endfor %}
+                                {% for a in 1..serie.rating_loss %}
+                                    <i class="material-icons" style="color: #a6a4a8; font-size: 12px">star</i>
+                                {% endfor %}
+                                <p class="text-justify white-text" style="margin-top: 20px; max-height: 100px">{{ serie.description }}</p>
+                            </div>
+                            <div class="card-action">
+                                <a href="{{ url }}serie/{{ serie.ID }}" class="right" style="color: #e14848">Regarder</a>
+                                <a class="left modal-trigger" href="#bd-{{ serie.ID }}" style="color: #e14848">Informations</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="bd-{{ serie.ID }}" class="modal" style="background: rgba(0, 0, 0, 0.71); color: #fff">
+                    <div class="modal-content">
+                        <h4>{{ serie.title }}</h4>
+                        {% for i in 1..serie.rating %}
+                            <i class="material-icons" style="font-size: 15px">star</i>
+                        {% endfor %}
+                        {% for a in 1..serie.rating_loss %}
+                            <i class="material-icons" style="color: #a6a4a8; font-size: 12px">star</i>
+                        {% endfor %}
+                        <p>{{ serie.description_full }}</p>
+                    </div>
+                    <div class="modal-footer" style="background-color: #e14848;">
+                        <a href="#!" class=" modal-action modal-close waves-effect waves-red btn-flat white-text">Fermer</a>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+<div id="films" class="col s12">
+    <div class="container">
+        <div class="row" style="margin-top: 40px">
+            <nav>
+                <div class="nav-wrapper">
+                    <form>
+                        <div class="input-field">
+                            <input id="search" type="search" required>
+                            <label for="search"><i class="material-icons">search</i></label>
+                            <i class="material-icons">close</i>
+                        </div>
+                    </form>
+                </div>
+            </nav>
+            <br>
+            {% for film in films %}
+                <div class="col s6">
+                    <div class="card horizontal waves-effect" style="background: #141414">
+                        <div class="card-image">
+                            <img src="https://image.tmdb.org/t/p/w300_and_h450_bestv2/{{ film.cover }}" style="height: 300px">
+                        </div>
+                        <div class="card-stacked">
+                            <div class="card-content">
+                                <h5 class="white-text" style="font-weight: bold; white-space: nowrap;">{{ film.title }}
+                                    {% for i in 1..film.rating %}
+                                        <i class="material-icons white-text" style="font-size: 12px">star</i>
+                                    {% endfor %}
+                                    {% for a in 1..film.rating_loss %}
+                                        <i class="material-icons" style="color: #a6a4a8; font-size: 12px">star</i>
+                                    {% endfor %}
+                                    <p class="white-text text-justify" style="margin-top: 20px; max-height: 100px">{{ film.description }}</p>
+                            </div>
+                            <div class="card-action">
+                                <a href="{{ url }}film/{{ film.ID }}" class="right" style="color: #e14848">Regarder</a>
+                                <a class="left modal-trigger" href="#bd-{{ film.ID }}" style="color: #e14848">Informations</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="bd-{{ film.ID }}" class="modal" style="background: rgba(0, 0, 0, 0.71); color: #fff">
+                    <div class="modal-content">
+                        <h4>{{ film.title }}</h4>
+                        {% for i in 1..film.rating %}
+                            <i class="material-icons" style="font-size: 15px">star</i>
+                        {% endfor %}
+                        {% for a in 1..film.rating_loss %}
+                            <i class="material-icons" style="color: #a6a4a8; font-size: 12px">star</i>
+                        {% endfor %}
+                        <p>{{ film.description_full }}</p>
+                    </div>
+                    <div class="modal-footer" style="background-color: #e14848;">
+                        <a href="#!" class=" modal-action modal-close waves-effect waves-red btn-flat white-text">Fermer</a>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+<div id="account" class="col s12">
+    <div class="valign-wrapper" style="height: 300px; background: url('{{ url }}assets/img/background.jpg'); background-size: cover; background-color: rgba(20, 19, 19, 0.9); background-blend-mode: overlay;">
+        <div class="container">
+            <div class="section">
+                <img class="circle responsive-img" src="https://www.gravatar.com/avatar/{{ user.gravatar }}">
+                <h3 class="white-text">{{ user.full_name }}</h3>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="row">
+            <div class="col s8">
+                <div class="card darken-1" style="background: #141414">
+                    <div class="card-content white-text">
+                    </div>
+                    <div class="card-action">
+                        <a class="modal-trigger" href="#account_edit" style="color: #e14848">Modifier</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col s4">
+                <div class="collection">
+                    <a href="#!" class="collection-item">Nom complet<span class="badge">{{ user.full_name }}</span></a>
+                    <a href="#!" class="collection-item">Email<span class="badge">{{ user.email }}</span></a>
+                    <a href="#!" class="collection-item">Nom d'utilisateur<span class="badge">{{ user.username }}</span></a>
+                    <a href="#!" class="collection-item">Mot de passe<span class="badge">************</span></a>
+                    <a href="#!" class="collection-item">Date
+                        d'inscription<span class="badge">{{ user.date }}</span></a>
+                </div>
+                <a class="waves-effect waves-light btn white-text orange modal-trigger" href="#account_edit" style="width: 100%"><i class="material-icons right">edit</i>Modifier
+                    mon profil</a>
+                <a class="waves-effect waves-light btn white-text red modal-trigger" href="#logout" style="width: 100%"><i class="material-icons right">close</i>Me
+                    déconnecter</a>
+            </div>
+        </div>
+    </div>
+
+
+    <div id="account_edit" class="modal bottom-sheet">
+        <div class="modal-content">
+            <h4>Edition du profil</h4>
+            <p>Modifiez vos informations</p>
+            <div class="input-field col s12" style="margin-top: 50px">
+                <i class="material-icons prefix">account_circle</i>
+                <input id="icon_prefix" type="text" class="validate">
+                <label for="icon_prefix">First Name</label>
+            </div>
+            <div class="input-field col s12">
+                <i class="material-icons prefix">phone</i>
+                <input id="icon_telephone" type="tel" class="validate">
+                <label for="icon_telephone">Telephone</label>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <a href="#!" class=" modal-action modal-close waves-effect waves-green btn-flat">Agree</a>
+        </div>
+    </div>
+
+    <div id="logout" class="modal" style="background: rgba(0, 0, 0, 0.71); color: #fff">
+        <div class="modal-content">
+            <h4>Se déconnecter</h4>
+            <p>Etes-vous sûr de vouloir vous déconnecter ?</p>
+        </div>
+        <div class="modal-footer" style="background-color: #e14848;">
+            <a href="#!" class=" modal-action modal-close waves-effect waves-green btn-flat green-text">Non</a>
+            <a href="{{ url }}logout" class=" modal-action modal-close waves-effect waves-red btn-flat white-text">Oui</a>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('.modal-trigger').leanModal();
+    });
+</script>

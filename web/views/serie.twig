@@ -1,0 +1,55 @@
+{% include 'header.twig' %}
+
+<nav>
+    <div class="nav-wrapper">
+        <div class="container">
+            <a href="#" class="brand-logo center" style="font-size: 18px;"> {{ serie.title }}</a>
+            <ul class="left hide-on-med-and-down">
+                <li>
+                    <a href="{{ url }}"><i class="material-icons left tooltipped" data-position="bottom" data-delay="50" data-tooltip="Retour à l'accueil">keyboard_arrow_left</i></a>
+                </li>
+            </ul>
+            <ul class="right hide-on-med-and-down">
+                <li>
+                    <a style="cursor: pointer"><i class="material-icons tooltipped" data-position="bottom" data-delay="50" data-tooltip="Aujouter à mes favoris">star</i></a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<div class="valign-wrapper" style="height: auto; background: url('https://image.tmdb.org/t/p/w300_and_h450_bestv2/{{ serie.background }}'); background-size: cover; background-color: rgba(20, 19, 19, 0.9); background-blend-mode: overlay;">
+    <div class="container">
+        <div class="section">
+            <div class="row">
+                <div class="col s2 m2">
+                    <img src="https://image.tmdb.org/t/p/w300_and_h450_bestv2/{{ serie.cover }}" style="height: 300px">
+                </div>
+                <div class="col s10 m10">
+                    <h4 class="white-text">{{ serie.title }}</h4>
+                    <p style="color: #e1e1d8; margin-top: -10px">{{ serie.date }}</p>
+                    {% for i in 0..serie.rating %}
+                        <i class="material-icons white-text" style="font-size: 12px">star</i>
+                    {% endfor %}
+                    <p style="color: #e7e7e7">{{ serie.description }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    <div class="row">
+        {% for saison in saisons.saisons %}
+        <div class="col s4">
+            <div class="collection">
+                    <a href="#!" class="collection-item white-text" style="background: #e14848">Saisons {{ loop.index }}</a>
+                    {% set index = loop.index %}
+                    {% for episode in saison.episodes %}
+                        <a href="{{ url }}serie/watch/{{ serie.id }}/{{ index }}/{{ episode.episode_number }}" class="collection-item">Episode {{ episode.episode_number }}: <i style="font-size: 13px">{{ episode.name }}</i><span class="badge"><i class="material-icons">play_circle_outline</i></span></a>
+                    {% endfor %}
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>

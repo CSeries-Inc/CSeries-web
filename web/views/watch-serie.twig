@@ -1,0 +1,74 @@
+{% include 'header.twig' %}
+
+<nav>
+    <div class="nav-wrapper">
+        <div class="container">
+            <a href="#" class="brand-logo center" style="font-size: 18px;"> {{ serie.name }}: {{ episode.name }}</a>
+            <ul class="left hide-on-med-and-down">
+                <li>
+                    <a href="{{ url }}serie/12"><i class="material-icons left tooltipped" data-position="bottom" data-delay="50" data-tooltip="Retour à la série">keyboard_arrow_left</i></a>
+                </li>
+            </ul>
+            <ul class="right hide-on-med-and-down">
+                <li>
+                    <a style="cursor: pointer"><i class="material-icons tooltipped" data-position="bottom" data-delay="50" data-tooltip="Télécharger l'épisode">cloud_download</i></a>
+                </li>
+                <li>
+                    <a href="#description" class="modal-trigger" style="cursor: pointer"><i class="material-icons tooltipped" data-position="bottom" data-delay="50" data-tooltip="Voir les informations sur l'épisode">subject</i></a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<div style="background: #000">
+    <div class="row">
+        <div class="col s2"></div>
+        <div class="col s8">
+            <div id="serie"></div>
+        </div>
+        <div class="col s2"></div>
+    </div>
+</div>
+
+<div id="description" class="modal bottom-sheet" style="background: url({{ serie.backdrop_path }}); background-size: cover; background-color: rgba(20, 19, 19, 0.8); background-blend-mode: overlay;">
+    <div class="modal-content">
+        <h4 class="white-text">{{ episode.name }}</h4>
+        {% for i in 0..episode.vote_average %}
+            <i class="material-icons white-text" style="font-size: 15px">star</i>
+        {% endfor %}
+        <p style="color: #e7e7e7">{{ episode.overview }}</p>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+        $('.modal-trigger').leanModal();
+        $('#serie').html5_video({
+            source: {
+                "video/mp4": "{{ episode_link }}",
+            },
+            title: '',
+            color: '#e14848',
+            width: false,
+            poster: '',
+            buffering_text: 'Chargement...',
+            autoplay: false,
+            play_control: true,
+            time_indicator: true,
+            volume_control: true,
+            share_control: false,
+            fullscreen_control: true,
+            dblclick_fullscreen: true,
+
+            volume: 0.7,
+
+            show_controls_on_load: true,
+            show_controls_on_pause: true,
+
+            on_time_update: function (seconds) {
+                $(".time").html(seconds);
+            },
+        });
+    });
+</script>

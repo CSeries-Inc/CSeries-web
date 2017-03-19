@@ -1,0 +1,44 @@
+<!doctype html>
+<html class="no-js" lang="fr">
+<head>
+    <meta charset="utf-8">
+    <title>CSeries | {{ title }}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="theme-color" content="#db5945">
+    <link rel="icon" type="image/png" href="{{ url }}assets/img/favicon.png"/>
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="{{ url }}assets/css/cseries.css">
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <!--  -->
+
+    <!-- JS -->
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.7/js/materialize.min.js"></script>
+    <!--  -->
+</head>
+<body style="background: url('{{ url }}assets/img/background.jpg'); background-size: cover; background-color: rgba(20, 19, 19, 0.9); background-blend-mode: overlay;">
+<div class="container">
+    <div class="row">
+        <div class="col s4"></div>
+        <div class="col s4">
+            <img src="{{ url }}assets/img/logo.png" class="center-align" style="width: 100%; margin-top: 20vh">
+            <div class="row" style="margin-top: 60px">
+                {% if error is defined %}
+                    <div class="card-panel red lighten-2 white-text">{{ error }}</div>
+                {% endif %}
+                <form action="#" method="post" class="white-text">
+                    {{ form_widget(form) }}
+                    <a style="font-size: 12px; margin-bottom: 10px" href="{{ url }}forgot-password" class="text-darken-1">Les comptes ont été réinitialisé, le site est entrain d'être refait !</a>
+                    <button class="waves-effect waves-light btn red" type="submit" style="width: 100%; margin-top: 10px"><i class="material-icons right">send</i>Connexion</button>
+                    <a class="waves-effect waves-light btn blue" href="{{ url }}register" style="width: 100%; margin-top: 10px"><i class="material-icons right">add</i>S'inscrire</a>
+                </form>
+            </div>
+        </div>
+        <div class="col s4"></div>
+    </div>
+</div>
+</body>
+</html>
